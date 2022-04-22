@@ -38,7 +38,12 @@ client.on('messageCreate', async (message) => {
 
 
     await webhookClient.send({embeds: [embed]});
-    // await message.member.ban({reason: 'Automatic Spam Ban', days: 1});
+    try {
+      await message.member.ban({reason: 'Automatic Spam Ban', days: 1});
+    } catch (e) {
+      console.log(e);
+      await webhookClient.send("I don't have the permission to ban this user\n```" + e + "```");
+    }
 
   }
 });
