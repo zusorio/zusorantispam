@@ -1,13 +1,10 @@
 import "dotenv/config"
 import {WebhookClient, Client, Intents, MessageEmbed} from "discord.js";
-
+import config from "./config.json";
 
 const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
-const webhookClient = new WebhookClient({ url: process.env.WEBHOOK_URL });
 
 const recentMessages = [];
-
-
 
 client.once('ready', () => {
   console.log('[zusorantispam] Ready!');
@@ -28,6 +25,8 @@ client.on('messageCreate', async (message) => {
   const containsUrl = regexp.test(message.content.toLowerCase());
 
   if (similarMessageCount >= 4 && containsUrl) {
+    const webhookClient = new WebhookClient({ url: config[message.guild.id] });
+
 
     const embed = new MessageEmbed()
       .setColor('#000000')
